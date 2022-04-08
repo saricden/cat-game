@@ -53,7 +53,7 @@ class GameScene extends Scene {
         const dx = -(this.sx - x);
         const dy = (this.sy - y);
 
-        const vx = (Math.max(Math.min(dx, this.maxSpeed), -this.maxSpeed) * 2);
+        const vx = Math.max(Math.min(dx * 2, this.maxSpeed), -this.maxSpeed);
 
         this.cat.setVelocityX(vx);
 
