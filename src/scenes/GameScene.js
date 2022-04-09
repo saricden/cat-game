@@ -18,11 +18,11 @@ class GameScene extends Scene {
 
     this.ground = this.tilemap.createLayer('ground', tiles);
 
-    this.parabg0 = this.add.tileSprite(0, window.innerHeight * 0.6, window.innerWidth, 2000, 'parabg0');
+    this.parabg0 = this.add.tileSprite(0, this.tilemap.heightInPixels / 3, window.innerWidth, 2000, 'parabg0');
     this.parabg0.setOrigin(0, 0.5);
     this.parabg0.setScrollFactor(0, 0.4);
 
-    this.parabg1 = this.add.tileSprite(0, window.innerHeight, window.innerWidth, 1158, 'parabg1');
+    this.parabg1 = this.add.tileSprite(0, this.tilemap.heightInPixels / 2, window.innerWidth, 1158, 'parabg1');
     this.parabg1.setOrigin(0, 0.5);
     this.parabg1.setScrollFactor(0, 0.65);
 
@@ -94,7 +94,7 @@ class GameScene extends Scene {
 
     this.cameras.main.startFollow(this.cat);
     this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
-    this.cameras.main.setBackgroundColor(0x337788);
+    this.cameras.main.setBackgroundColor(0x4AB7CF);
   }
 
   update(time, delta) {
