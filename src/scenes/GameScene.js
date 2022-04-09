@@ -186,7 +186,7 @@ class GameScene extends Scene {
 
         if (!this.attackLock) {
           this.cat.setVelocityX(vx);
-          this.cameras.main.setFollowOffset(-vx / 2, 0);
+          this.cameras.main.setFollowOffset(-vx / 2, -150);
         }
 
         if (dx < 0) {
@@ -220,7 +220,7 @@ class GameScene extends Scene {
         delay: 10,
         repeat: 12,
         callback: () => {
-          this.cameras.main.setFollowOffset(this.cameras.main.followOffset.x * 0.75, 0);
+          this.cameras.main.setFollowOffset(this.cameras.main.followOffset.x * 0.75, -150);
         }
       });
     });
@@ -228,6 +228,7 @@ class GameScene extends Scene {
     this.catContrail.stop();
 
     this.cameras.main.startFollow(this.cat);
+    this.cameras.main.setFollowOffset(0, -150);
     this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
     this.cameras.main.setBackgroundColor(0x4AB7CF);
   }
