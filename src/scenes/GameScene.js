@@ -47,6 +47,37 @@ class GameScene extends Scene {
       }
     });
 
+    this.shimmer = this.add.particles('shimmer');
+    this.shimmerFX = this.shimmer.createEmitter({
+      quantity: 2,
+      lifespan: 1500,
+      x: {
+        min: -window.innerWidth,
+        max: window.innerWidth * 2
+      },
+      y: {
+        min: -window.innerHeight,
+        max: window.innerHeight * 2
+      },
+      alpha: (particle, key, t) => {
+        return (1 - t);
+      },
+      // radial: true,
+      // angle: {
+      //   min: 0,
+      //   max: 360
+      // },
+      scale: {
+        min: 0.1,
+        max: 0.35
+      },
+      speedX: {
+        min: 0,
+        max: 25
+      },
+      speedY: 0
+    });
+
     this.tilemap = this.add.tilemap('map-level1');
     const tiles = this.tilemap.addTilesetImage('tileset1', 'tileset1', 32, 32, 1, 2);
 

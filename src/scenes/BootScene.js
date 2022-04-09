@@ -19,6 +19,7 @@ class BootScene extends Scene {
 
     // VFX
     this.load.image('cloud-puff', 'assets/particles/cloud-puff.png');
+    this.load.image('shimmer', 'assets/particles/shimmer.png');
   }
 
   create() {
