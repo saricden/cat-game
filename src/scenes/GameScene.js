@@ -1,4 +1,4 @@
-import {Scene} from 'phaser';
+import {Scene, Math as pMath} from 'phaser';
 
 class GameScene extends Scene {
   constructor() {
@@ -116,6 +116,7 @@ class GameScene extends Scene {
     this.cloudPuff.setDepth(2);
     this.cat.setDepth(3);
     this.fg.setDepth(4);
+    this.shimmer.setDepth(5);
     
     // Create a helper object for our arrow keys
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -185,6 +186,9 @@ class GameScene extends Scene {
     // Parallax effects
     this.parabg0.tilePositionX = this.cameras.main.scrollX * 0.5;
     this.parabg1.tilePositionX = this.cameras.main.scrollX * 0.75;
+
+    // Shimmer effect
+    this.shimmerFX.setPosition(this.cameras.main.scrollX + pMath.Between(-window.innerWidth, window.innerWidth * 2), this.cameras.main.scrollY + pMath.Between(-window.innerHeight, window.innerHeight * 2));
 
     if (left.isDown) {
       this.cat.setVelocityX(-this.maxSpeed);
