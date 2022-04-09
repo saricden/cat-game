@@ -17,6 +17,8 @@ class GameScene extends Scene {
     const tiles = this.tilemap.addTilesetImage('tileset1', 'tileset1', 32, 32, 1, 2);
 
     this.ground = this.tilemap.createLayer('ground', tiles);
+    this.fg = this.tilemap.createLayer('fg', tiles);
+    this.bg = this.tilemap.createLayer('bg', tiles);
 
     this.parabg0 = this.add.tileSprite(0, this.tilemap.heightInPixels / 3, window.innerWidth, 2000, 'parabg0');
     this.parabg0.setOrigin(0, 0.5);
@@ -44,8 +46,10 @@ class GameScene extends Scene {
     this.parabg0.setDepth(-3);
     this.sun.setDepth(-2);
     this.parabg1.setDepth(-1);
-    this.ground.setDepth(0);
-    this.cat.setDepth(1);
+    this.bg.setDepth(0);
+    this.ground.setDepth(1);
+    this.cat.setDepth(2);
+    this.fg.setDepth(3);
     
     // Create a helper object for our arrow keys
     this.cursors = this.input.keyboard.createCursorKeys();
