@@ -83,7 +83,9 @@ class GameScene extends Scene {
     this.cameras.main.setBackgroundColor(0x337788);
   }
 
-  update() {
+  update(time, delta) {
+    // console.log(delta);
+
     // Listen for keyboard input
     const {left, right, up, down} = this.cursors;
     const isGrounded = this.cat.body.blocked.down;
@@ -122,12 +124,14 @@ class GameScene extends Scene {
     else {
       if (vy <= 0) {
         this.cat.play('tabby-flip', true);
+        
+        const flipRot = 5 * Math.PI * (delta / 1000);
 
         if (this.cat.flipX) {
-          this.cat.rotation -= 0.15;
+          this.cat.rotation -= flipRot;
         }
         else {
-          this.cat.rotation += 0.15;
+          this.cat.rotation += flipRot;
         }
       }
       else {
