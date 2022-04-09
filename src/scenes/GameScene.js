@@ -74,6 +74,7 @@ class GameScene extends Scene {
         const vx = Math.max(Math.min(dx * 2, this.maxSpeed), -this.maxSpeed);
 
         this.cat.setVelocityX(vx);
+        this.cameras.main.setFollowOffset(-vx / 2, 0);
 
         if (dx < 0) {
           this.cat.setFlipX(true);
@@ -94,6 +95,13 @@ class GameScene extends Scene {
       this.sx = null;
       this.sy = null;
       this.cat.setVelocityX(0);
+      this.time.addEvent({
+        delay: 10,
+        repeat: 12,
+        callback: () => {
+          this.cameras.main.setFollowOffset(this.cameras.main.followOffset.x * 0.75, 0);
+        }
+      });
     });
 
     this.cameras.main.startFollow(this.cat);
