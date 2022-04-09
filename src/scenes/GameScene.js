@@ -18,6 +18,13 @@ class GameScene extends Scene {
 
     this.ground = this.tilemap.createLayer('ground', tiles);
 
+    this.parabg0 = this.add.tileSprite(0, window.innerHeight, window.innerWidth, 1111, 'parabg0');
+    this.parabg0.setOrigin(0, 1);
+    this.parabg0.setScrollFactor(0);
+
+    this.sun = this.add.image(window.innerWidth, 0, 'sun');
+    this.sun.setScrollFactor(0);
+
     this.ground.setCollisionByProperty({ collides: true });
 
     const spawnPoints = this.tilemap.getObjectLayer('spawn').objects;
@@ -30,6 +37,8 @@ class GameScene extends Scene {
 
     this.physics.add.collider(this.cat, this.ground);
 
+    this.parabg0.setDepth(-2);
+    this.sun.setDepth(-1);
     this.ground.setDepth(0);
     this.cat.setDepth(1);
     
@@ -84,11 +93,11 @@ class GameScene extends Scene {
   }
 
   update(time, delta) {
-    // console.log(delta);
-
-    // Listen for keyboard input
     const {left, right, up, down} = this.cursors;
     const isGrounded = this.cat.body.blocked.down;
+
+    // Parallax effects
+    this.parabg0.tilePositionX = this.cameras.main.scrollX * 0.5;
 
     if (left.isDown) {
       this.cat.setVelocityX(-this.maxSpeed);
