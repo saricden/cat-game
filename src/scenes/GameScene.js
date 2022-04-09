@@ -13,6 +13,39 @@ class GameScene extends Scene {
     this.jumpHeight = 450;
     this.cat.body.setMaxVelocityY(450);
 
+    this.cloudPuff = this.add.particles('cloud-puff');
+    this.catContrail = this.cloudPuff.createEmitter({
+      radial: true,
+      x: 0,
+      y: 0,
+      follow: this.cat,
+      followOffset: {
+        x: 0,
+        y: 25
+      },
+      quantity: 2,
+      angle: {
+        min: 0,
+        max: 360
+      },
+      scale: {
+        start: 0.65,
+        end: 0
+      },
+      alpha: {
+        min: 0.01,
+        max: 0.1
+      },
+      speedX: {
+        min: 25,
+        max: 65
+      },
+      speedY: {
+        min: -25,
+        max: -115
+      }
+    });
+
     this.tilemap = this.add.tilemap('map-level1');
     const tiles = this.tilemap.addTilesetImage('tileset1', 'tileset1', 32, 32, 1, 2);
 
@@ -48,8 +81,9 @@ class GameScene extends Scene {
     this.parabg1.setDepth(-1);
     this.bg.setDepth(0);
     this.ground.setDepth(1);
-    this.cat.setDepth(2);
-    this.fg.setDepth(3);
+    this.cloudPuff.setDepth(2);
+    this.cat.setDepth(3);
+    this.fg.setDepth(4);
     
     // Create a helper object for our arrow keys
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -83,8 +117,9 @@ class GameScene extends Scene {
           this.cat.setFlipX(false);
         }
 
-        if (dy > this.jumpThreshold) {
+        if (dy > this.jumpThreshold && this.cat.body.blocked.down) {
           this.cat.setVelocityY(-this.jumpHeight);
+          this.catContrail.explode(50);
         }
 
         this.sy = y;
@@ -103,6 +138,8 @@ class GameScene extends Scene {
         }
       });
     });
+
+    this.catContrail.stop();
 
     this.cameras.main.startFollow(this.cat);
     this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
@@ -134,6 +171,7 @@ class GameScene extends Scene {
     if (up.isDown && isGrounded) {
       this.cat.setVelocityY(-this.jumpHeight);
       this.isTouchControlled = false;
+      this.catContrail.explode(50);
     }
 
     const {x: vx, y: vy} = this.cat.body.velocity;
@@ -143,9 +181,11 @@ class GameScene extends Scene {
 
       if (vx === 0) {
         this.cat.play('tabby-idle', true);
+        this.catContrail.stop();
       }
       else {
         this.cat.play('tabby-run', true);
+        this.catContrail.emitParticle(2);
       }
     }
     else {

@@ -16,6 +16,9 @@ class BootScene extends Scene {
     this.load.image('sun', 'assets/maps/sun.png');
     this.load.image('tileset1', 'assets/maps/tileset1-ex.png');
     this.load.tilemapTiledJSON('map-level1', 'assets/maps/level1.json');
+
+    // VFX
+    this.load.image('cloud-puff', 'assets/particles/cloud-puff.png');
   }
 
   create() {
