@@ -12,6 +12,7 @@ class GameScene extends Scene {
     this.maxSpeed = 275;
     this.jumpHeight = 450;
     this.cat.body.setMaxVelocityY(450);
+    this.cat.body.checkCollision.up = false;
 
     this.cloudPuff = this.add.particles('cloud-puff');
     this.catContrail = this.cloudPuff.createEmitter({
