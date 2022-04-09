@@ -193,7 +193,7 @@ class GameScene extends Scene {
           this.cat.setFlipX(true);
           this.cat.body.setOffset(29, 10);
         }
-        else {
+        else if (dx > 0) {
           this.cat.setFlipX(false);
           this.cat.body.setOffset(15, 10);
         }
