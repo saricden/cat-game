@@ -18,9 +18,13 @@ class GameScene extends Scene {
 
     this.ground = this.tilemap.createLayer('ground', tiles);
 
-    this.parabg0 = this.add.tileSprite(0, window.innerHeight, window.innerWidth, 1111, 'parabg0');
-    this.parabg0.setOrigin(0, 1);
-    this.parabg0.setScrollFactor(0);
+    this.parabg0 = this.add.tileSprite(0, window.innerHeight * 0.6, window.innerWidth, 2000, 'parabg0');
+    this.parabg0.setOrigin(0, 0.5);
+    this.parabg0.setScrollFactor(0, 0.4);
+
+    this.parabg1 = this.add.tileSprite(0, window.innerHeight, window.innerWidth, 1158, 'parabg1');
+    this.parabg1.setOrigin(0, 0.5);
+    this.parabg1.setScrollFactor(0, 0.65);
 
     this.sun = this.add.image(window.innerWidth, 0, 'sun');
     this.sun.setScrollFactor(0);
@@ -37,8 +41,9 @@ class GameScene extends Scene {
 
     this.physics.add.collider(this.cat, this.ground);
 
-    this.parabg0.setDepth(-2);
-    this.sun.setDepth(-1);
+    this.parabg0.setDepth(-3);
+    this.sun.setDepth(-2);
+    this.parabg1.setDepth(-1);
     this.ground.setDepth(0);
     this.cat.setDepth(1);
     
@@ -98,6 +103,7 @@ class GameScene extends Scene {
 
     // Parallax effects
     this.parabg0.tilePositionX = this.cameras.main.scrollX * 0.5;
+    this.parabg1.tilePositionX = this.cameras.main.scrollX * 0.75;
 
     if (left.isDown) {
       this.cat.setVelocityX(-this.maxSpeed);

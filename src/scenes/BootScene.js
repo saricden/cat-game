@@ -12,6 +12,7 @@ class BootScene extends Scene {
     this.load.atlas('tabby', 'assets/sprites/tabby.png', 'assets/sprites/tabby.json');
 
     this.load.image('parabg0', 'assets/maps/parabg0.png');
+    this.load.image('parabg1', 'assets/maps/parabg1.png');
     this.load.image('sun', 'assets/maps/sun.png');
     this.load.image('tileset1', 'assets/maps/tileset1-ex.png');
     this.load.tilemapTiledJSON('map-level1', 'assets/maps/level1.json');
