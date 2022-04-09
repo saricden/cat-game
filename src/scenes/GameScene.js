@@ -7,12 +7,11 @@ class GameScene extends Scene {
 
   create() {
     this.cat = this.physics.add.sprite(0, 0, 'tabby');
-    this.cat.body.setSize(40, 65);
-    this.cat.body.setOffset(5, 0);
+    this.cat.body.setSize(18, 50);
+    this.cat.body.setOffset(15, 10);
     this.maxSpeed = 275;
     this.jumpHeight = 450;
     this.cat.body.setMaxVelocityY(450);
-    this.cat.body.checkCollision.up = false;
 
     this.cloudPuff = this.add.particles('cloud-puff');
     this.catContrail = this.cloudPuff.createEmitter({
@@ -106,7 +105,14 @@ class GameScene extends Scene {
       }
     });
 
-    this.physics.add.collider(this.cat, this.ground);
+    this.physics.add.collider(this.cat, this.ground, null, (cat, tile) => {
+      if (tile.index === 4) { // 4 = platform tile
+        return (cat.y <= tile.pixelY);
+      }
+      else {
+        return true;
+      }
+    });
 
     this.parabg0.setDepth(-3);
     this.sun.setDepth(-2);
@@ -120,6 +126,44 @@ class GameScene extends Scene {
     
     // Create a helper object for our arrow keys
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    // Attack / combo logic
+    this.attackLock = false;
+    this.comboStage = 0;
+
+    let attack = () => {
+      if (!this.attackLock || this.comboStage === 2) {
+        this.cat.play('tabby-atk1');
+        this.attackLock = true;
+      }
+      else if (this.comboStage === 1) {
+        this.cat.play('tabby-atk2');
+        this.comboStage = 0;
+        this.cameras.main.shake(100, 0.005);
+      }
+    };
+    attack = attack.bind(this);
+
+    this.input.keyboard.on('keydown-SPACE', attack);
+
+    this.cat.on('animationcomplete-tabby-atk1', () => {
+      this.attackLock = false;
+      this.comboStage = 0;
+    });
+
+    this.cat.on('animationcomplete-tabby-atk2', () => {
+      this.attackLock = false;
+      this.comboStage = 0;
+    });
+
+    this.cat.on('animationupdate', ({key}, {index}) => {
+      if (key === 'tabby-atk1' && index > 11) {
+        this.comboStage = 1;
+      }
+      else if (key === 'tabby-atk2' && index > 7) {
+        this.comboStage = 2;
+      }
+    });
 
     // Touch controls
     this.isTouchControlled = false;
@@ -140,17 +184,21 @@ class GameScene extends Scene {
 
         const vx = Math.max(Math.min(dx * 2, this.maxSpeed), -this.maxSpeed);
 
-        this.cat.setVelocityX(vx);
-        this.cameras.main.setFollowOffset(-vx / 2, 0);
+        if (!this.attackLock) {
+          this.cat.setVelocityX(vx);
+          this.cameras.main.setFollowOffset(-vx / 2, 0);
+        }
 
         if (dx < 0) {
           this.cat.setFlipX(true);
+          this.cat.body.setOffset(29, 10);
         }
         else {
           this.cat.setFlipX(false);
+          this.cat.body.setOffset(15, 10);
         }
 
-        if (dy > this.jumpThreshold && this.cat.body.blocked.down) {
+        if (dy > this.jumpThreshold && this.cat.body.blocked.down && !this.attackLock) {
           this.cat.setVelocityY(-this.jumpHeight);
           this.catContrail.explode(50);
         }
@@ -159,7 +207,12 @@ class GameScene extends Scene {
       }
     });
 
-    this.input.on('pointerup', () => {
+    this.input.on('pointerup', ({x, y}) => {
+      // Tap
+      if (this.sx === x && this.sy === y) {
+        attack();
+      }
+
       this.sx = null;
       this.sy = null;
       this.cat.setVelocityX(0);
@@ -190,57 +243,64 @@ class GameScene extends Scene {
     // Shimmer effect
     this.shimmerFX.setPosition(this.cameras.main.scrollX + pMath.Between(-window.innerWidth, window.innerWidth * 2), this.cameras.main.scrollY + pMath.Between(-window.innerHeight, window.innerHeight * 2));
 
-    if (left.isDown) {
-      this.cat.setVelocityX(-this.maxSpeed);
-      this.cat.setFlipX(true);
-      this.isTouchControlled = false;
-    }
-    else if (right.isDown) {
-      this.cat.setVelocityX(this.maxSpeed);
-      this.cat.setFlipX(false);
-      this.isTouchControlled = false;
-    }
-    else if (!this.isTouchControlled) {
-      this.cat.setVelocityX(0);
-    }
-    
-    if (up.isDown && isGrounded) {
-      this.cat.setVelocityY(-this.jumpHeight);
-      this.isTouchControlled = false;
-      this.catContrail.explode(50);
-    }
+    if (!this.attackLock) {
+      if (left.isDown) {
+        this.cat.setVelocityX(-this.maxSpeed);
+        this.cat.setFlipX(true);
+        this.cat.body.setOffset(29, 10);
+        this.isTouchControlled = false;
+      }
+      else if (right.isDown) {
+        this.cat.setVelocityX(this.maxSpeed);
+        this.cat.setFlipX(false);
+        this.cat.body.setOffset(15, 10);
+        this.isTouchControlled = false;
+      }
+      else if (!this.isTouchControlled) {
+        this.cat.setVelocityX(0);
+      }
+      
+      if (up.isDown && isGrounded) {
+        this.cat.setVelocityY(-this.jumpHeight);
+        this.isTouchControlled = false;
+        this.catContrail.explode(50);
+      }
 
-    const {x: vx, y: vy} = this.cat.body.velocity;
+      const {x: vx, y: vy} = this.cat.body.velocity;
 
-    if (isGrounded) {
-      this.cat.rotation = 0;
-
-      if (vx === 0) {
-        this.cat.play('tabby-idle', true);
-        this.catContrail.stop();
+      if (isGrounded) {
+        this.cat.rotation = 0;
+  
+        if (vx === 0) {
+          this.cat.play('tabby-idle', true);
+          this.catContrail.stop();
+        }
+        else {
+          this.cat.play('tabby-run', true);
+          this.catContrail.emitParticle(2);
+        }
       }
       else {
-        this.cat.play('tabby-run', true);
-        this.catContrail.emitParticle(2);
+        if (vy <= 0) {
+          this.cat.play('tabby-flip', true);
+          
+          const flipRot = 5 * Math.PI * (delta / 1000);
+  
+          if (this.cat.flipX) {
+            this.cat.rotation -= flipRot;
+          }
+          else {
+            this.cat.rotation += flipRot;
+          }
+        }
+        else {
+          this.cat.play('tabby-fall', true);
+          this.cat.rotation = 0;
+        }
       }
     }
     else {
-      if (vy <= 0) {
-        this.cat.play('tabby-flip', true);
-        
-        const flipRot = 5 * Math.PI * (delta / 1000);
-
-        if (this.cat.flipX) {
-          this.cat.rotation -= flipRot;
-        }
-        else {
-          this.cat.rotation += flipRot;
-        }
-      }
-      else {
-        this.cat.play('tabby-fall', true);
-        this.cat.rotation = 0;
-      }
+      this.cat.body.setVelocityX(0);
     }
   }
 

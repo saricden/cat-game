@@ -76,6 +76,32 @@ class BootScene extends Scene {
       repeat: -1
     });
 
+    this.anims.create({
+      key: 'tabby-atk1',
+      frames: this.anims.generateFrameNames('tabby', {
+        start: 0,
+        end: 28,
+        prefix: 'atk1-',
+        suffix: '.png',
+        zeroPad: 2
+      }),
+      frameRate: 60,
+      repeat: 0
+    });
+
+    this.anims.create({
+      key: 'tabby-atk2',
+      frames: this.anims.generateFrameNames('tabby', {
+        start: 29,
+        end: 44,
+        prefix: 'atk2-',
+        suffix: '.png',
+        zeroPad: 2
+      }),
+      frameRate: 60,
+      repeat: 0
+    });
+
     this.scene.start('scene-game');
   }
 }
