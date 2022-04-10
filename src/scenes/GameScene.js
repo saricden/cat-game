@@ -29,7 +29,7 @@ class GameScene extends Scene {
         max: 360
       },
       scale: {
-        start: 0.65,
+        start: 0.85,
         end: 0
       },
       alpha: {
@@ -37,14 +37,15 @@ class GameScene extends Scene {
         max: 0.1
       },
       speedX: {
-        min: 25,
-        max: 65
+        min: -100,
+        max: 100
       },
       speedY: {
-        min: -25,
-        max: -115
+        min: -100,
+        max: 100
       }
     });
+    this.catContrail.stop();
 
     this.shimmer = this.add.particles('shimmer');
     this.shimmerFX = this.shimmer.createEmitter({
@@ -225,8 +226,6 @@ class GameScene extends Scene {
       });
     });
 
-    this.catContrail.stop();
-
     this.cameras.main.startFollow(this.cat);
     this.cameras.main.setFollowOffset(0, -150);
     this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
@@ -274,11 +273,9 @@ class GameScene extends Scene {
   
         if (vx === 0) {
           this.cat.play('tabby-idle', true);
-          this.catContrail.stop();
         }
         else {
           this.cat.play('tabby-run', true);
-          this.catContrail.emitParticle(2);
         }
       }
       else {
