@@ -20,6 +20,9 @@ class BootScene extends Scene {
     // VFX
     this.load.image('cloud-puff', 'assets/particles/cloud-puff.png');
     this.load.image('shimmer', 'assets/particles/shimmer.png');
+
+    // Music
+    this.load.audio('hill-country', 'assets/music/orchestral1.mp3');
   }
 
   create() {

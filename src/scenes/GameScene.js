@@ -226,6 +226,10 @@ class GameScene extends Scene {
       });
     });
 
+    // Music
+    this.sound.play('hill-country', { loop: true });
+
+    // Camera config
     this.cameras.main.startFollow(this.cat);
     this.cameras.main.setFollowOffset(0, -150);
     this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
