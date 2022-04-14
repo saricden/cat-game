@@ -50,6 +50,30 @@
                  "width":0,
                  "x":672,
                  "y":352
+                }, 
+                {
+                 "height":0,
+                 "id":2,
+                 "name":"birb",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":416,
+                 "y":1440
+                }, 
+                {
+                 "height":0,
+                 "id":4,
+                 "name":"birb",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":832,
+                 "y":1472
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -70,7 +94,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":2,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.2",

@@ -9,7 +9,9 @@ class BootScene extends Scene {
     // Load any assets here from your assets directory
     this.load.image('cat-like', 'assets/cat-like-creature.png');
 
+    // Sprites
     this.load.atlas('tabby', 'assets/sprites/tabby.png', 'assets/sprites/tabby.json');
+    this.load.atlas('birb', 'assets/sprites/birb.png', 'assets/sprites/birb.json');
 
     this.load.image('parabg0', 'assets/maps/parabg0.png');
     this.load.image('parabg1', 'assets/maps/parabg1.png');
@@ -26,7 +28,7 @@ class BootScene extends Scene {
   }
 
   create() {
-    // Create animations
+    // Tabby animations
     this.anims.create({
       key: 'tabby-idle',
       frames: this.anims.generateFrameNames('tabby', {
@@ -103,6 +105,59 @@ class BootScene extends Scene {
       }),
       frameRate: 60,
       repeat: 0
+    });
+
+    // Birb animations
+    this.anims.create({
+      key: 'birb-flap',
+      frames: this.anims.generateFrameNames('birb', {
+        start: 0,
+        end: 59,
+        prefix: 'flap-',
+        suffix: '.png',
+        zeroPad: 2
+      }),
+      frameRate: 60,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'birb-dive',
+      frames: this.anims.generateFrameNames('birb', {
+        start: 0,
+        end: 39,
+        prefix: 'dive-',
+        suffix: '.png',
+        zeroPad: 2
+      }),
+      frameRate: 60,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'birb-knockback',
+      frames: this.anims.generateFrameNames('birb', {
+        start: 0,
+        end: 19,
+        prefix: 'knockback-',
+        suffix: '.png',
+        zeroPad: 2
+      }),
+      frameRate: 60,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'birb-ko',
+      frames: this.anims.generateFrameNames('birb', {
+        start: 0,
+        end: 39,
+        prefix: 'ko-',
+        suffix: '.png',
+        zeroPad: 2
+      }),
+      frameRate: 60,
+      repeat: -1
     });
 
     this.scene.start('scene-game');

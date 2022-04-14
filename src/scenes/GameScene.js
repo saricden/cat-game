@@ -1,4 +1,5 @@
 import {Scene, Math as pMath} from 'phaser';
+import Birb from '../sprites/Birb';
 
 class GameScene extends Scene {
   constructor() {
@@ -7,8 +8,8 @@ class GameScene extends Scene {
 
   create() {
     this.cat = this.physics.add.sprite(0, 0, 'tabby');
-    this.cat.body.setSize(18, 50);
-    this.cat.body.setOffset(15, 10);
+    this.cat.body.setSize(28, 76);
+    this.cat.body.setOffset(25, 26);
     this.maxSpeed = 275;
     this.jumpHeight = 450;
     this.cat.body.setMaxVelocityY(450);
@@ -99,10 +100,14 @@ class GameScene extends Scene {
     this.ground.setCollisionByProperty({ collides: true });
 
     const spawnPoints = this.tilemap.getObjectLayer('spawn').objects;
+    this.sprites = this.add.group();
 
     spawnPoints.forEach(({x, y, name}) => {
       if (name === 'tabby') {
         this.cat.setPosition(x, y);
+      }
+      else if (name === 'birb') {
+        this.sprites.add(new Birb(this, x, y));
       }
     });
 
@@ -192,11 +197,11 @@ class GameScene extends Scene {
 
         if (dx < 0) {
           this.cat.setFlipX(true);
-          this.cat.body.setOffset(29, 10);
+          this.cat.body.setOffset(49, 26);
         }
         else if (dx > 0) {
           this.cat.setFlipX(false);
-          this.cat.body.setOffset(15, 10);
+          this.cat.body.setOffset(25, 26);
         }
 
         if (dy > this.jumpThreshold && this.cat.body.blocked.down && !this.attackLock) {
@@ -250,14 +255,14 @@ class GameScene extends Scene {
     if (!this.attackLock) {
       if (left.isDown) {
         this.cat.setVelocityX(-this.maxSpeed);
+        this.cat.body.setOffset(49, 26);
         this.cat.setFlipX(true);
-        this.cat.body.setOffset(29, 10);
         this.isTouchControlled = false;
       }
       else if (right.isDown) {
         this.cat.setVelocityX(this.maxSpeed);
+        this.cat.body.setOffset(25, 26);
         this.cat.setFlipX(false);
-        this.cat.body.setOffset(15, 10);
         this.isTouchControlled = false;
       }
       else if (!this.isTouchControlled) {
